@@ -36,7 +36,11 @@ tasks.post('/', (req, res) => {
 // show
 tasks.get('/:id', (req, res) => {
   models.Task.findById(req.params.id).then(task => {
-    res.json(task);
+    if (!task) {
+      res.status(400).send('Nincs ilyen id');
+    } else {
+      res.json(task);
+    };
   });
 });
 
