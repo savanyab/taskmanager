@@ -21,14 +21,14 @@ tasks.post('/', (req, res) => {
   if (!req.body.name || !req.body.message) {
     return res.status(400).send('Name és message kitöltése kötelező');
   } else {
-    models.Task.findOne({ where: { name: req.body.name}}).then(result => {
-        if (result) {
-          return res.status(400).send('Már van ilyen name');
-        } else {
-          models.Task.create(req.body).then(task => {
-            return res.json(task);
-          });
-        };
+    models.Task.findOne({ where: { name: req.body.name } }).then(result => {
+      if (result) {
+        return res.status(400).send('Már van ilyen name');
+      } else {
+        models.Task.create(req.body).then(task => {
+          return res.json(task);
+        });
+      };
     });
   };
 });
@@ -45,9 +45,22 @@ tasks.get('/:id', (req, res) => {
 });
 
 // update
+/*
 tasks.put('/:id', (req, res) => {
   models.Task.update(req.body, { where: { id: req.params.id } }).then(task => {
     res.json(task);
+  });
+}); */
+
+tasks.put('/:id', (req, res) => {
+  models.Task.findById(req.params.id).then(preresult => {
+    if (!preresult) {
+      return res.status(400).send('Nincs ilyen id');
+    } else {       
+          models.Task.update(req.body, { where: { id: req.params.id } }).then(task => {
+            return res.json(task);
+      });
+    };
   });
 });
 
