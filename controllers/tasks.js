@@ -66,9 +66,15 @@ tasks.put('/:id', (req, res) => {
 
 // destroy
 tasks.delete('/:id', (req, res) => {
-  models.Task.destroy({ where: { id: req.params.id } }).then(task => {
-    res.json(task);
-  });
+  models.Task.findById(req.params.id).then(result => {
+    if (!result) {
+      return res.status(400).send('Nincs ilyen id');
+    } else {
+      models.Task.destroy({ where: { id: req.params.id } }).then(task => {
+        res.json(task);
+      });
+    };
+  });  
 });
 
 
