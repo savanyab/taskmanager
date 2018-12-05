@@ -1,13 +1,12 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const tasks = require('./controllers/tasks');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get('/', (req, res) => {
-  res.send('Szia');
-})
+app.use('/tasks', tasks);
 
 app.listen(process.env.PORT, () => {
-  console.log("Running...")
+  console.log(`Running on port ${process.env.PORT}...`)
 });
